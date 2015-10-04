@@ -5,6 +5,7 @@ from rest_framework import status
 from rest_framework.generics import GenericAPIView
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
+from rest_framework.views import APIView
 from ..serializers.auth import UserLoginSerializer
 from ..serializers.user import UserSerializer
 from ..models import AuthToken
@@ -46,7 +47,7 @@ class LoginAPIView(GenericAPIView):
 login_api_view = LoginAPIView.as_view()
 
 
-class LogoutAPIView(GenericAPIView):
+class LogoutAPIView(APIView):
     def delete(self, request, *args, **kwargs):
         try:
             request.user.auth_token.delete()

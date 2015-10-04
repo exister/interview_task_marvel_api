@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 from urlparse import urlparse
-from rest_framework.generics import ListAPIView
 from rest_framework.response import Response
+from rest_framework.views import APIView
 from .mixins import Paginatable
 from . import marvel_api
 
 
-class ListView(Paginatable, ListAPIView):
+class ListView(Paginatable, APIView):
     def load_list(self, filters):
         try:
             comics = marvel_api.get_comics(**filters)
@@ -21,8 +21,35 @@ class ListView(Paginatable, ListAPIView):
 
 
 class ComicsListAPIView(ListView):
+    def get(self, request, *args, **kwargs):
+        """
+        Comics list resource.
+        ---
+        type:
+          count:
+            type: integer
+          total:
+            type: integer
+          limit:
+            type: integer
+          offset:
+            type: integer
+          results:
+            type: array
 
-    def list(self, request, *args, **kwargs):
+        parameters:
+            - name: title
+              description: Case-sensitive title
+              required: false
+              type: string
+              paramType: query
+            - name: page
+              description: Page number
+              required: false
+              type: integer
+              paramType: query
+        """
+
         filters = self.get_page_filters(request)
         if request.GET.get('title'):
             filters['titleStartsWith'] = request.GET.get('title')
@@ -47,7 +74,16 @@ class RelatedComicsListAPIView(ListView):
 
         return comic
 
-    def list(self, request, *args, **kwargs):
+    def get(self, request, *args, **kwargs):
+        """
+        ---
+        parameters:
+            - name: page
+              description: Page number
+              required: false
+              type: integer
+              paramType: query
+        """
         comic = self.get_comic(kwargs.get('id'))
 
         if not comic:
