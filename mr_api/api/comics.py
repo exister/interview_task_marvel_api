@@ -1,28 +1,16 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 from urlparse import urlparse
-from django.conf import settings
-from marvel.marvel import Marvel
 from rest_framework.generics import ListAPIView
 from rest_framework.response import Response
 from .mixins import Paginatable
-
-
-m = Marvel(settings.MARVEL_PUBLIC_KEY, settings.MARVEL_PRIVATE_KEY)
+from . import marvel_api
 
 
 class ListView(Paginatable, ListAPIView):
-    limit = 10
-
-    def get_page_filters(self, request):
-        return {
-            'limit': self.limit,
-            'offset': (lambda x: max(int(x) * self.limit if x and x.isdigit() else 0, 0))(request.GET.get('page'))
-        }
-
     def load_list(self, filters):
         try:
-            comics = m.get_comics(**filters)
+            comics = marvel_api.get_comics(**filters)
         except Exception as e:
             return Response({'error': e.message}, status=500)
 
@@ -50,7 +38,7 @@ class RelatedComicsListAPIView(ListView):
 
         if comic_id:
             try:
-                comic = m.get_comic(comic_id)
+                comic = marvel_api.get_comic(comic_id)
             except Exception as e:  # TODO log
                 pass
             else:
