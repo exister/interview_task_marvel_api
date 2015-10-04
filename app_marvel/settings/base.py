@@ -55,7 +55,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.security.SecurityMiddleware',
 )
 
-ROOT_URLCONF = 'marvel.urls'
+ROOT_URLCONF = 'app_marvel.urls'
 
 TEMPLATES = [
     {
@@ -73,7 +73,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'marvel.wsgi.application'
+WSGI_APPLICATION = 'app_marvel.wsgi.application'
 
 
 # Database
@@ -126,3 +126,8 @@ REST_FRAMEWORK = {
     ),
     'TEST_REQUEST_DEFAULT_FORMAT': 'json'
 }
+
+# Other settings
+
+MARVEL_PUBLIC_KEY = 'b3b06aef542f4098cd991f408ab62a16'
+MARVEL_PRIVATE_KEY = '742c15b0ef14a694b98335348bda694f740fbedf'
