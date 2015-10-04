@@ -9,6 +9,7 @@ urlpatterns_auth = patterns('mr_api.api.auth',
 
 urlpatterns_comics = patterns('mr_api.api.comics',
     url('^m/comics/$', 'comics_list_api_view', name='m-comics'),
+    url('^m/comics/(?P<id>\d+)/related/$', 'related_comics_list_api_view', name='m-related-comics'),
 )
 
 
