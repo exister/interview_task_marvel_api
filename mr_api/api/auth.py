@@ -25,7 +25,8 @@ class LoginAPIView(GenericAPIView):
             user = authenticate(username=serializer.data.get('username'), password=serializer.data.get('password'))
 
             if user:
-                token, created = AuthToken.objects.get_or_create(user=user)
+                token = AuthToken(user=user)
+                token.save()
 
                 return Response(
                     UserSerializer(instance=user).data,

@@ -1,11 +1,12 @@
 import random
+import datetime
 import jwt
 from django.conf import settings
 from django.db import models
 
 
 class AuthToken(models.Model):
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, related_name='auth_token')
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='auth_token')
     token = models.CharField(max_length=255)
 
     created_at = models.DateTimeField(auto_now_add=True)
@@ -17,7 +18,11 @@ class AuthToken(models.Model):
         return super(AuthToken, self).save(*args, **kwargs)
 
     def generate_token(self):
-        return jwt.encode({'user_id': self.user_id, 'rnd': random.random()}, settings.SECRET_KEY)
+        return jwt.encode({
+            'user_id': self.user_id,
+            'rnd': random.random(),
+            'exp': datetime.datetime.utcnow() + datetime.timedelta(days=1)
+        }, settings.SECRET_KEY)
 
     def __unicode__(self):
         return self.token
