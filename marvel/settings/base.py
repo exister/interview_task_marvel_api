@@ -40,6 +40,8 @@ INSTALLED_APPS = (
 
     'rest_framework',
     'django_extensions',
+
+    'mr_api',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -107,6 +109,9 @@ STATIC_URL = '/static/'
 # Apps settings
 
 REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'mr_api.authentication.TokenAuthentication',
+    ),
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
     ),
