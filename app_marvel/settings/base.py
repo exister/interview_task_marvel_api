@@ -107,6 +107,13 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
+        'LOCATION': 'app_marvel_cache',
+    }
+}
+
 # Apps settings
 
 REST_FRAMEWORK = {
@@ -126,6 +133,10 @@ REST_FRAMEWORK = {
         'rest_framework.parsers.MultiPartParser'
     ),
     'TEST_REQUEST_DEFAULT_FORMAT': 'json'
+}
+
+REST_FRAMEWORK_EXTENSIONS = {
+    'DEFAULT_CACHE_ERRORS': False
 }
 
 # Other settings

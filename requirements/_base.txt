@@ -7,3 +7,4 @@ PyJWT==1.4.0
 requests==2.7.0
 PyMarvel==0.1.0
 django-rest-swagger==0.3.4
+drf-extensions==0.2.8

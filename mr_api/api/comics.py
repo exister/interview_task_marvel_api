@@ -3,8 +3,9 @@ from __future__ import unicode_literals
 from urlparse import urlparse
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework_extensions.cache.decorators import cache_response
 from .mixins import Paginatable
-from . import marvel_api
+from . import marvel_api, CacheKeyConstructor
 
 
 class ListView(Paginatable, APIView):
@@ -21,6 +22,7 @@ class ListView(Paginatable, APIView):
 
 
 class ComicsListAPIView(ListView):
+    @cache_response(key_func=CacheKeyConstructor())
     def get(self, request, *args, **kwargs):
         """
         Comics list resource.
@@ -74,6 +76,7 @@ class RelatedComicsListAPIView(ListView):
 
         return comic
 
+    @cache_response(key_func=CacheKeyConstructor())
     def get(self, request, *args, **kwargs):
         """
         ---
